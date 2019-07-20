@@ -1,0 +1,4 @@
+QQ;qq.com;getuid:vuin,clientuin;cookieuid:p_uin,pt2gguin,uin
+新浪微博;.weibo.com;getuid:uid;getf1:nick
+爱奇艺;.71.am||.iqiyi.com;getuid:ppid,pu,psp_uid,qyid;getf1:psp_vip,psp_status
+淘宝;.taobao.com;getuid:uid,user_id

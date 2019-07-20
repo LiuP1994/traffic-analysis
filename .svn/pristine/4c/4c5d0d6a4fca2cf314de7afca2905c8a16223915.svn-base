@@ -1,0 +1,129 @@
+#!/usr/bin/env bash
+
+rundir=/var/lib/hadoop-hdfs/zqq/test
+bigdataJar=${rundir}/analysis-1.0-SNAPSHOT.jar
+hive_database=cftest
+hive_location=/user/hive/warehouse/cftest.db
+
+filedate=${1}
+filemonth=`echo ${filedate:0:6}`
+beforedate=`date -d "-1 day ${filedate}" +%Y%m%d`
+deldate=`date -d "-30 day ${filedate}" +%Y%m%d`
+unicode=0
+
+traffic_bi_static_phone_head=traffic_bi_static_phone_head.txt
+
+if [[ ${unicode} -eq 1 ]]; then
+    traffic_bi_static_phone_head=traffic_bi_static_phone_head_unicode.txt
+fi
+
+hive << SQL
+use ${hive_database};
+drop table traffic_bi_out_phone_${filedate};
+create table traffic_bi_out_phone_${filedate} (
+username string,
+tid string,
+phone string,
+terminal_name string,
+firstdate bigint,
+lastdate bigint,
+dates bigint
+)
+row format delimited
+fields terminated by '\t'
+STORED AS TEXTFILE
+location '${hive_location}/traffic_bi_out_phone_${filedate}';
+
+insert overwrite table traffic_bi_out_phone_${filedate}
+select username,tid,phone,terminal_name,firstdate,lastdate,dates from
+traffic_bi_phone where dir='${filedate}' and dates > 1;
+exit;
+SQL
+
+hive << SQL
+use ${hive_database};
+drop table traffic_bi_out_phone_blist${filedate};
+create table traffic_bi_out_phone_blist${filedate} (
+tid string
+)
+row format delimited
+fields terminated by '\t'
+STORED AS TEXTFILE
+location '${hive_location}traffic_bi_out_phone_blist${filedate}';
+
+insert overwrite table traffic_bi_out_phone_blist${filedate}
+select tid from (
+select tid,count(phone) as cnt from (
+select tid,phone from traffic_bi_out_phone_${filedate}
+group by tid,phone
+) t1
+) t2 where cnt > 5;
+exit;
+SQL
+
+hive << SQL
+use ${hive_database};
+drop table traffic_bi_out_phone_${filedate}_2;
+create table traffic_bi_out_phone_${filedate}_2 (
+username string,
+tid string,
+phone string,
+terminal_name string,
+firstdate bigint,
+lastdate bigint,
+dates bigint
+)
+row format delimited
+fields terminated by '\t'
+STORED AS TEXTFILE
+location '${hive_location}/traffic_bi_out_phone_${filedate}_2';
+
+set hive.exec.compress.output=false;
+
+insert overwrite table traffic_bi_out_phone_${filedate}_2
+select username,t1.tid,phone,terminal_name,firstdate,lastdate,dates
+from traffic_bi_out_phone_${filedate} t1 left outer join
+traffic_bi_out_phone_blist${filedate} t2
+on t1.tid = t2.tid
+where t2.tid is null;
+exit;
+SQL
+
+
+hive << SQL
+use ${hive_database};
+drop table traffic_bi_out_phone;
+create table traffic_bi_out_phone (
+username string,
+tid string,
+phone string,
+terminal_name string,
+firstdate bigint,
+lastdate bigint,
+dates bigint,
+corp string,
+area string
+)
+row format delimited
+fields terminated by '\t'
+STORED AS TEXTFILE
+location '${hive_location}/traffic_bi_out_phone';
+exit;
+SQL
+hadoop fs -rm -r ${hive_location}/traffic_bi_static_phone_head
+hadoop fs -put ${rundir}/static/${traffic_bi_static_phone_head} ${hive_location}/traffic_bi_static_phone_head
+
+hadoop fs -rm -r ${hive_location}/traffic_bi_out_phone
+hadoop jar ${bigdataJar} cn.com.runtrend.analysis.hadoop.etl.CorpArea  ${hive_location}/traffic_bi_out_phone_${filedate}_2 ${hive_location}/traffic_bi_static_phone_head ${hive_location}/traffic_bi_out_phone 0,username,1,tid,2,phone,3,terminal_name,4,firstdate,5,lastdate,6,dates
+
+hive << SQL
+use ${hive_database};
+
+drop table traffic_bi_out_phone_${filedate};
+drop table traffic_bi_out_phone_${filedate}_2;
+drop table traffic_bi_out_phone_blist${filedate};
+exit;
+SQL
+
+
+

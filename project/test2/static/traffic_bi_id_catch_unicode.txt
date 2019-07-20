@@ -1,0 +1,4 @@
+QQ;qq.com;getuid:vuin,clientuin;cookieuid:p_uin,pt2gguin,uin
+\u65b0\u6d6a\u5fae\u535a;.weibo.com;getuid:uid;getf1:nick
+\u7231\u5947\u827a;.71.am||.iqiyi.com;getuid:ppid,pu,psp_uid,qyid;getf1:psp_vip,psp_status
+\u6dd8\u5b9d;.taobao.com;getuid:uid,user_id

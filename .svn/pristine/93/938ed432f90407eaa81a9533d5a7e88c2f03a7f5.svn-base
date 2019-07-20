@@ -1,0 +1,94 @@
+package cn.com.runtrend.analysis.hadoop.idmapping;
+
+import java.io.IOException;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.NullWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.apache.hadoop.util.GenericOptionsParser;
+
+/**
+ * @Auther: 张乔齐
+ * @Description: 从生成的关系中提取账号相关数据
+ * @Date: 2017/9/7
+ * @Modified By:
+ */
+public class Id2Uid {
+
+  public static boolean run(String[] args) {
+    Configuration conf = new Configuration();
+    try {
+      String[] otherArgs = new GenericOptionsParser(
+          conf, args).getRemainingArgs();
+      if (otherArgs.length != 2) {
+        System.exit(2);
+      }
+
+      Job job = Job.getInstance(conf, "Id2Uid");
+
+      FileInputFormat.addInputPath(job, new Path(otherArgs[0] + "_id1"));
+      FileOutputFormat.setOutputPath(job, new Path(otherArgs[0] + "_Id2Uid"));
+
+      configureJob(job);
+
+      return job.waitForCompletion(true);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return false;
+  }
+
+  private static void configureJob(Job job) {
+    job.setJarByClass(Id2Uid.class);
+
+    job.setMapperClass(Id2Uid.Id2UidMapper.class);
+    job.setMapOutputKeyClass(Text.class);
+    job.setMapOutputValueClass(NullWritable.class);
+
+    job.setReducerClass(Id2Uid.Id2UidReducer.class);
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(NullWritable.class);
+
+    job.setInputFormatClass(TextInputFormat.class);
+    job.setOutputFormatClass(TextOutputFormat.class);
+  }
+
+  public static class Id2UidMapper extends Mapper<LongWritable, Text, Text, NullWritable> {
+
+
+    @Override
+    protected void map(LongWritable key, Text value, Context context)
+        throws IOException, InterruptedException {
+      String[] values = value.toString().split("\t", -1);
+      if (values.length == 4) {
+        if ((values[1].startsWith("imei") || values[1].startsWith("idfa"))
+            && values[2].startsWith("uid")) {
+          values[1] = values[1].replaceAll("imei_", "").replaceAll("idfa_", "");
+          values[2] = values[2].replaceAll("uid_", "");
+          values[3] = values[3].replaceAll("terminal_", "");
+          context
+              .write(new Text(values[0] + "\t" + values[1] + "\t" + values[2] + "\t" + values[3]),
+                  NullWritable.get());
+        }
+      }
+    }
+  }
+
+  public static class Id2UidReducer extends Reducer<Text, IntWritable, Text, NullWritable> {
+
+    @Override
+    protected void reduce(Text key, Iterable<IntWritable> values,
+        Context context) throws IOException, InterruptedException {
+      context.write(key, NullWritable.get());
+    }
+  }
+}

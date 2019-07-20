@@ -1,0 +1,71 @@
+package cn.com.runtrend.analysis.hadoop.etl;
+
+import cn.com.runtrend.analysis.core.TrieObject;
+import junit.framework.TestCase;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+
+/**
+ * 作者：张乔齐
+ * cn.com.runtrend.analysis.hadoop.etl
+ * 2017/8/23
+ * 简介：<描述本类作用>
+ */
+public class IdCatchTest extends TestCase {
+  public void testMain() throws Exception {
+    BufferedReader br = new BufferedReader(
+            new InputStreamReader(new FileInputStream("E:\\project\\work\\analysis\\static\\traffic_bi_id_catch.txt")));
+    String line;
+    while ((line = br.readLine()) != null) {
+      String[] idmDetail = line.split(";", -1);
+      if (idmDetail.length >= 3) {
+        String[] hosts = idmDetail[1].split("\\|\\|");
+        String getuid = "";
+        String cookieuid = "";
+        String getf1 = "";
+        String cookief1 = "";
+        String getf2 = "";
+        String cookief2 = "";
+        String getf3 = "";
+        String cookief3 = "";
+        for (String field : idmDetail) {
+          if (field.startsWith("getuid:")) {
+            getuid = field.replaceAll("getuid:", "");
+          }
+          if (field.startsWith("cookieuid:")) {
+            cookieuid = field.replaceAll("cookieuid:", "");
+          }
+          if (field.startsWith("getf1:")) {
+            getf1 = field.replaceAll("getf1:", "");
+          }
+          if (field.startsWith("cookief1:")) {
+            cookief1 = field.replaceAll("cookief1:", "");
+          }
+          if (field.startsWith("getf2:")) {
+            getf2 = field.replaceAll("getf2:", "");
+          }
+          if (field.startsWith("cookief2:")) {
+            cookief2 = field.replaceAll("cookief2:", "");
+          }
+          if (field.startsWith("getf3:")) {
+            getf3 = field.replaceAll("getf3:", "");
+          }
+          if (field.startsWith("cookief3:")) {
+            cookief3 = field.replaceAll("cookief3:", "");
+          }
+        }
+        for (String host : hosts) {
+          System.out.println(host);
+          System.out.println(
+                  new TrieObject.Builder().mString1(idmDetail[0]).mString2(getuid).mString3(cookieuid).mString4(getf1)
+                          .mString5(cookief1).mString6(getf2).mString7(cookief2).mString8(getf3).mString9(cookief3)
+                          .build().toString());
+        }
+      }
+    }
+    br.close();
+  }
+
+}

@@ -1,0 +1,26 @@
+dalvik/[0-9]\.[0-9]\.[0-9] \(linux; u; android [0-9]\.[0-9]; ([a-z0-9\s\-]+) build/[a-z0-9\-\.]+\).*
+dalvik/[0-9]\.[0-9]\.[0-9] \(linux; u; android [0-9]\.[0-9]\.[0-9]; ([a-z0-9\s\-]+) build/[a-z0-9\-\.]+\).*
+dalvik/[0-9]\.[0-9]\.[0-9] \(linux; u; android [0-9]\.[0-9]; ([a-z0-9\s\-]+) miui/[a-z0-9\-\.]+\).*
+dalvik/[0-9]\.[0-9]\.[0-9] \(linux; u; android [0-9]\.[0-9]\.[0-9]; ([a-z0-9\s\-]+) miui/[a-z0-9\-\.]+\).*
+dalvik/[0-9]\.[0-9]\.[0-9] \(linux; u; android [0-9]\.[0-9]+; [a-z]+/([0-9a-z]+) build/[a-z0-9\s\-]+\)
+dalvik/[0-9]\.[0-9]\.[0-9] \(linux; u; android [0-9]\.[0-9]\.[0-9]; ([a-z0-9\s\.]+) build/[a-z0-9\-\.]+\)
+dalvik/[0-9]\.[0-9]\.[0-9] \(linux; u; android [0-9]\.[0-9]\.[0-9]; ([a-z0-9\s\_]+) build/[a-z0-9\-\.]+\)
+dalvik/[0-9]\.[0-9]\.[0-9] \(linux; u; android [0-9]\.[0-9]\.[0-9]; ([a-z0-9\s\+]+) build/[a-z0-9\-\.]+\)
+dalvik/v[0-9]+\.[0-9]+\.[0-9]+ compatible \(tvm xx; yunos [0-9]\.[0-9]; linux; u; android [0-9]\.[0-9]\.[0-9] compatible; ([a-z0-9\s\-]+) build/[a-z0-9\s\-]+\).*
+dalvik/v[0-9]+\.[0-9]+\.[0-9]+ compatible \(tvm xx; yunos [0-9]\.[0-9]; linux; u; android [0-9]\.[0-9]\.[0-9] compatible; ([a-z0-9\s\-]+_[a-z0-9\s\-]+) build/[a-z0-9\s\-]+\).*
+mozilla/[0-9]\.[0-9] \((iphone); cpu iphone os [0-9]+_[0-9]+ like mac os x\) applewebkit.*
+mozilla/[0-9]\.[0-9] \((iphone); cpu iphone os [0-9]+_[0-9]+_[0-9]+ like mac os x\) applewebkit.*
+mozilla/[0-9]\.[0-9] \(linux; u; android [0-9]\.[0-9]; zh-cn; ([a-z0-9\s\-]+) build/[a-z0-9\-\.]+\) applewebkit.*
+mozilla/[0-9]\.[0-9] \(linux; u; android [0-9]\.[0-9]\.[0-9]; zh-cn; ([a-z0-9\s\-]+) build/[a-z0-9\-\.]+\) applewebkit.*
+mozilla/[0-9]\.[0-9] \(linux; u; android [0-9]\.[0-9]; zh-cn;([a-z0-9\s\-]+)/[a-z0-9\s\-]+ build/[a-z0-9\-\.]+\) applewebkit.*
+mozilla/[0-9]\.[0-9] \(linux; u; android [0-9]\.[0-9]\.[0-9]; zh-cn;([a-z0-9\s\-]+)/[a-z0-9\s\-]+ build/[a-z0-9\-\.]+\) applewebkit.*
+mozilla/[0-9]\.[0-9] \(linux; android [0-9]\.[0-9]\.[0-9]; ([a-z0-9\s\+]+) build/[a-z0-9\-\.\_]+\) applewebkit.*
+qiyivideo/[0-9]\.[0-9] \(ios;com\.qiyi\.iphone;ios[0-9]+\.[0-9]+;(iphone[0-9],[0-9])\) corejar
+qiyivideo/[0-9]\.[0-9] \(ios;com\.qiyi\.iphone;ios[0-9]+\.[0-9]+\.[0-9]+;(iphone[0-9],[0-9])\) corejar
+qiyivideo/[0-9]\.[0-9]\.[0-9] \(ios;com\.qiyi\.iphone;ios[0-9]+\.[0-9]+;(iphone[0-9],[0-9])\) corejar
+qiyivideo/[0-9]\.[0-9]\.[0-9] \(ios;com\.qiyi\.iphone;ios[0-9]+\.[0-9]+\.[0-9]+;(iphone[0-9],[0-9])\) corejar
+qiyivideo/[0-9]\.[0-9]\.[0-9] \(ios;com\.pps\.test;ios[0-9]+\.[0-9]+;(ipad[0-9],[0-9])\) corejar
+youku;[0-9]\.[0-9]\.[0-9];iphone os;[0-9]+\.[0-9]+;(iphone[0-9],[0-9])
+网易云音乐 [0-9]\.[0-9]\.[0-9] rv:[0-9]+ \((iphone); ios [0-9]{1,2}\.[0-9]\.[0-9]; zh_cn\)
+mqqbrowser/[0-9]\.[0-9] \(([a-z0-9\s]+); u; cpu like mac os x; zh-cn\)
+joke/[0-9]\.[0-9]\.[0-9] \((iphone); ios [0-9]{1,2}\.[0-9]; scale/[0-9]\.[0-9]+\)

@@ -1,0 +1,24 @@
+package cn.com.runtrend.analysis.hadoop.etl;
+
+import cn.com.runtrend.analysis.core.HttpGetParser;
+import junit.framework.TestCase;
+
+import java.util.List;
+
+/**
+ * 作者：张乔齐
+ * cn.com.runtrend.analysis.hadoop.etl
+ * 2017/9/12
+ * 简介：<描述本类作用>
+ */
+public class MobileInfoTest extends TestCase {
+    public void testMain() throws Exception {
+        String url = "http://www.baidu.com?xx=13057578026&xx2=13057578025&xx=868201023162782&ccc=00:01:6C:06:A6:29";
+        List<String> list = HttpGetParser.paramList(url);
+        System.out.println(list);
+        System.out.println(MobileInfo.MobileInfoUtil.imei(list));
+        System.out.println(MobileInfo.MobileInfoUtil.phone(list));
+        System.out.println(MobileInfo.MobileInfoUtil.mac(list));
+    }
+
+}

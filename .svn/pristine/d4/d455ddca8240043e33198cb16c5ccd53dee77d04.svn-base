@@ -1,0 +1,92 @@
+package cn.com.runtrend.analysis.hadoop.etl;
+
+import cn.com.runtrend.analysis.commons.StringUtils;
+import junit.framework.TestCase;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 作者：张乔齐
+ * cn.com.runtrend.analysis.hadoop.etl
+ * 2017/8/17
+ * 简介：<描述本类作用>
+ */
+public class UseragentTest extends TestCase {
+  public void testIphone(){
+    String iphone = "";
+    String url = "http://www.baidu.com?dev=iphone6,7";
+    if (iphone.equals("")){
+      iphone = StringUtils.regex(".*\\=(iphone[0-9]{1,2},[0-9]{1,2}).*",url);
+    }
+    if (iphone.equals("")){
+      iphone = StringUtils.regex(".*\\=(ipad[0-9]{1,2},[0-9]{1,2}).*",url);
+    }
+    if (iphone.equals("")){
+      iphone = StringUtils.regex(".*\\=(ipod[0-9]{1,2},[0-9]{1,2}).*",url);
+    }
+    System.out.println(iphone);
+  }
+
+  public void testMain() throws Exception {
+    Map<String, List<String>> regxMap = new HashMap<String, List<String>>();
+    BufferedReader br = new BufferedReader(
+            new InputStreamReader(new FileInputStream("E:\\project\\work\\analysis\\static\\traffic_bi_static_ua.txt")));
+    String line;
+    while ((line = br.readLine()) != null) {
+      String startName = startName(line);
+
+      if (!"".equals(startName)) {
+        if (regxMap.containsKey(startName)) {
+          List<String> list = regxMap.get(startName);
+          list.add(line);
+          regxMap.put(startName, list);
+        } else {
+          List<String> list = new ArrayList<String>();
+          list.add(line);
+          regxMap.put(startName, list);
+        }
+      }
+    }
+    br.close();
+
+    String ua = "Dalvik/2.1.0 (Linux; U; Android 5.1; m3 note Build/LMY47I)".toLowerCase();
+    String startName = startName(ua);
+    String terminal = "";
+    if (regxMap.containsKey(startName)) {
+      for (String regex : regxMap.get(startName)) {
+        String str = StringUtils.regex(regex, ua);
+        if (!str.equals("")) {
+          terminal = str;
+          break;
+        }
+      }
+    }
+    System.out.println(terminal);
+  }
+
+  private static String startName(String line) {
+    StringBuilder sb = new StringBuilder();
+    char[] lineChars = line.toCharArray();
+    for (char c : lineChars) {
+      if ((c >= '\u4e00' && c <= '\u9fa5') || (c >= 'a' && c <= 'z')) {
+        sb.append(c);
+      } else {
+        break;
+      }
+    }
+    return sb.toString();
+  }
+
+  public void testIphone1(){
+    String abc = "111\t222";
+    String [] ab = abc.split("\t",-1);
+    System.out.println(ab[0]);
+    System.out.println(ab[1]);
+  }
+}
